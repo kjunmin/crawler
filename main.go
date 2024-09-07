@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	"github.com/kjunmin/crawler/crawl"
 )
 
 func PrettyPrint(v interface{}) (err error) {
@@ -32,7 +34,7 @@ func main() {
 	fmt.Printf("starting crawl of: %v", baseUrl)
 
 	pages := make(map[string]int)
-	crawlPage(baseUrl, baseUrl, pages)
+	crawl.CrawlPage(baseUrl, baseUrl, pages)
 
 	PrettyPrint(pages)
 }

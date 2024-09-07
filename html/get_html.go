@@ -1,4 +1,4 @@
-package main
+package html
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func getHTML(rawURL string) (string, error) {
+func GetHTML(rawURL string) (string, error) {
 
 	resp, err := http.Get(rawURL)
 

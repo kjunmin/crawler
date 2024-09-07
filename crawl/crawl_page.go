@@ -1,11 +1,14 @@
-package main
+package crawl
 
 import (
 	"fmt"
 	"net/url"
+
+	crawlhtml "github.com/kjunmin/crawler/html"
+	crawlurl "github.com/kjunmin/crawler/url"
 )
 
-func crawlPage(rawBaseURL, rawCurrentURL string, pages map[string]int) {
+func CrawlPage(rawBaseURL, rawCurrentURL string, pages map[string]int) {
 
 	u, err := url.Parse(rawBaseURL)
 	if err != nil {
@@ -28,7 +31,7 @@ func crawlPage(rawBaseURL, rawCurrentURL string, pages map[string]int) {
 		return
 	}
 
-	normalizedRawCurrentURL, err := NormalizeURL(rawCurrentURL)
+	normalizedRawCurrentURL, err := crawlurl.NormalizeURL(rawCurrentURL)
 	if err != nil {
 		fmt.Errorf("Unable to normalize URL %v", rawCurrentURL)
 		return
@@ -39,19 +42,19 @@ func crawlPage(rawBaseURL, rawCurrentURL string, pages map[string]int) {
 		return
 	}
 
-	htmlBody, err := getHTML(rawCurrentURL)
+	htmlBody, err := crawlhtml.GetHTML(rawCurrentURL)
 	if err != nil {
 		fmt.Errorf("Unable to get HTML for %v", rawCurrentURL)
 		return
 	}
 
-	urls, err := getURLsFromHtml(htmlBody, normalizedRawCurrentURL)
+	urls, err := crawlhtml.GetURLsFromHtml(htmlBody, normalizedRawCurrentURL)
 	if err != nil {
 		fmt.Errorf("Unable to get URLS from html body for URL %v", normalizedRawCurrentURL)
 	}
 
 	for _, url := range urls {
-		normalizedUrl, err := normalizeURL(url)
+		normalizedUrl, err := crawlurl.NormalizeURL(url)
 		if err != nil {
 			continue
 		}
@@ -61,7 +64,7 @@ func crawlPage(rawBaseURL, rawCurrentURL string, pages map[string]int) {
 		} else {
 			fmt.Printf("Crawling url %v...", normalizedUrl)
 			pages[normalizedUrl]++
-			crawlPage(rawBaseURL, normalizedUrl, pages)
+			CrawlPage(rawBaseURL, normalizedUrl, pages)
 		}
 	}
 

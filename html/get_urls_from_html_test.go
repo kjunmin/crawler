@@ -1,4 +1,4 @@
-package main
+package html
 
 import (
 	"reflect"
@@ -35,7 +35,7 @@ func TestGetURLsFromHTML(t *testing.T) {
 
 	for i, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			actual, err := getURLsFromHtml(tc.htmlBody, tc.inputURL)
+			actual, err := GetURLsFromHtml(tc.htmlBody, tc.inputURL)
 			if err != nil {
 				t.Errorf("Test %v - %s FAIL actual %v, expected %v", i, tc.name, actual, tc.expected)
 			}

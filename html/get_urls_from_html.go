@@ -1,4 +1,4 @@
-package main
+package html
 
 import (
 	"net/url"
@@ -16,7 +16,7 @@ func constructURL(rawBaseURL, href string) string {
 	}
 }
 
-func getURLsFromHtml(htmlBody, rawBaseURL string) ([]string, error) {
+func GetURLsFromHtml(htmlBody, rawBaseURL string) ([]string, error) {
 	htmlReader := strings.NewReader(htmlBody)
 	nodes, err := html.Parse(htmlReader)
 
