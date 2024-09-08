@@ -16,7 +16,7 @@ func constructURL(rawBaseURL, href string) string {
 	}
 }
 
-func GetURLsFromHtml(htmlBody, rawBaseURL string) ([]string, error) {
+func GetURLsFromHtml(htmlBody string, baseURL *url.URL) ([]string, error) {
 	htmlReader := strings.NewReader(htmlBody)
 	nodes, err := html.Parse(htmlReader)
 
@@ -27,7 +27,12 @@ func GetURLsFromHtml(htmlBody, rawBaseURL string) ([]string, error) {
 		if n.Type == html.ElementNode && n.Data == "a" {
 			for _, a := range n.Attr {
 				if a.Key == "href" {
-					urls = append(urls, constructURL(rawBaseURL, a.Val))
+					href, err := url.Parse(a.Val)
+					if err != nil {
+						continue
+					}
+					resolvedURL := baseURL.ResolveReference(href)
+					urls = append(urls, resolvedURL.String())
 				}
 			}
 		}
