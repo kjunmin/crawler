@@ -1,18 +1,20 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
 )
 
-func PrettyPrint(v interface{}) (err error) {
-	b, err := json.MarshalIndent(v, "", "  ")
-	if err == nil {
-		fmt.Println(string(b))
+func PrettyPrint(v map[string]int, baseURL string) {
+	fmt.Println("=============================")
+	fmt.Printf("REPORT for %v\n", baseURL)
+	fmt.Println("=============================")
+
+	for item, count := range v {
+		fmt.Printf("Found %v internal links to %v\n", count, item)
 	}
-	return
+
 }
 
 func main() {
@@ -52,5 +54,5 @@ func main() {
 	go cfg.CrawlPage(baseUrl)
 	cfg.wg.Wait()
 
-	PrettyPrint(cfg.pages)
+	PrettyPrint(cfg.pages, baseUrl)
 }
